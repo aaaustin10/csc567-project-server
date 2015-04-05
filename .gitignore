@@ -1,0 +1,3 @@
+clipboardserver/settings_local.py
+*.py[cod]
+*.sqlite3
