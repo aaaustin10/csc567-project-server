@@ -28,6 +28,7 @@ class Entry(models.Model):
         d['timestamp'] = str(self.timestamp)
         d['contents'] = self.contents
         d['owner_id'] = self.owner.id
+        d['item_pk'] = self.pk
         return d
 
     def to_json(self):
