@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.views.generic import View
+from django.views.generic import View, TemplateView
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from clipboard.models import *
@@ -51,6 +51,7 @@ class LoginView(View):
             return HttpResponse(user.id)
         elif user.get().check_password(json_contents['passkey']):
             return HttpResponse(user.get().id)
-        elif len(user) == 0:
-            return HttpResponse(0)
         return HttpResponse(-1)
+
+class ClipView(TemplateView):
+    template_name = "clipboard/clip.html"
