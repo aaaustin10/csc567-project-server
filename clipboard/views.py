@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from django.views.generic import View
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from clipboard.models import *
+import json
 
 class ClipboardView(View):
     @csrf_exempt
@@ -22,7 +24,7 @@ class ClipboardView(View):
         if start and end:
             end += start
 
-        entries = Entry.objects.filter(owner_id=1).order_by('-timestamp').select_related('owner')[start : end]
+        entries = Entry.objects.filter(owner_id=request.GET.get('owner_id')).order_by('-timestamp').select_related('owner')[start : end]
         return HttpResponse(Entry.iterable_to_json(entries))
 
     def post(self, request):
@@ -30,3 +32,25 @@ class ClipboardView(View):
         e = Entry.json_to_entry(contents)
         e.save()
         return HttpResponse(Entry.iterable_to_json([e]))
+
+class LoginView(View):
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        create = bool(request.GET.get('create'))
+        contents = request.body
+        json_contents = json.loads(contents)
+
+        user = User.objects.filter(username=json_contents['username'])
+        if create and len(user) == 0:
+            user = User.objects.create(username=json_contents['username'])
+            user.set_password(json_contents['passkey'])
+            user.save()
+            return HttpResponse(user.id)
+        elif user.get().check_password(json_contents['passkey']):
+            return HttpResponse(user.get().id)
+        elif len(user) == 0:
+            return HttpResponse(0)
+        return HttpResponse(-1)
