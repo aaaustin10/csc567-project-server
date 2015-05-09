@@ -6,9 +6,18 @@
     <script src="{% static 'js/components/enc-base64-min.js' %}"></script>
     <script src="{% static 'js/components/mode-ecb.js' %}"></script>
     <script src="{% static 'js/components/pad-nopadding.js' %}"></script>
+    <script src="{% static 'js/components/pad-nopadding.js' %}"></script>
+    <script src="{% static 'js/rollups/sha256.js' %}"></script>
     <script src="{% static 'js/clips.js' %}"></script>
 </head>
 <body>
-    
+    <div id="login-form">
+        Username <input id="username" type="text">
+        <br>
+        Password <input id="password" type="text">
+        <br>
+        <input id="get-button" value="Get Clips" type="button">
+    </div>
+    <input id="fetch" value="Fetch" type="button">
 </body>
 
