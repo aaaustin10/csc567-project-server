@@ -1,4 +1,4 @@
-server_url = "http://localhost:8000/";
+server_url = "http://austinfstewart.com:8000/";
 
 function decode(data, key) {
     return CryptoJS.AES.decrypt(CryptoJS.lib.CipherParams.create({ciphertext: CryptoJS.enc.Hex.parse(data)}), CryptoJS.enc.Hex.parse(key), { mode: CryptoJS.mode.ECB }).toString(CryptoJS.enc.Utf8) 
